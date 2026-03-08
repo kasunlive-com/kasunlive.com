@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Save, GripVertical } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 
 interface Skill {
   id: string;
@@ -61,6 +61,17 @@ const AdminSkills = () => {
     }
   };
 
+  const moveSkill = async (index: number, dir: "up" | "down") => {
+    const swap = dir === "up" ? index - 1 : index + 1;
+    if (swap < 0 || swap >= skills.length) return;
+    const a = skills[index], b = skills[swap];
+    await Promise.all([
+      supabase.from("skills").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("skills").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchSkills();
+  };
+
   if (loading) return <p className="font-display text-sm text-muted-foreground">Loading...</p>;
 
   return (
@@ -93,9 +104,16 @@ const AdminSkills = () => {
 
       {/* List */}
       <div className="space-y-2">
-        {skills.map((skill) => (
+        {skills.map((skill, index) => (
           <div key={skill.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
-            <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <div className="flex flex-col gap-0.5">
+              <button onClick={() => moveSkill(index, "up")} disabled={index === 0} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                <ChevronUp className="h-4 w-4" />
+              </button>
+              <button onClick={() => moveSkill(index, "down")} disabled={index === skills.length - 1} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </div>
             <input
               defaultValue={skill.name}
               onBlur={(e) => {

@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Upload, FolderOpen, ImageIcon } from "lucide-react";
+import { Plus, Trash2, Upload, FolderOpen, ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 
 interface GalleryItem {
   id: string;

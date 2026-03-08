@@ -56,6 +56,17 @@ const AdminCertifications = () => {
     else { fetchCerts(); toast({ title: "Certification deleted" }); }
   };
 
+  const moveCert = async (index: number, dir: "up" | "down") => {
+    const swap = dir === "up" ? index - 1 : index + 1;
+    if (swap < 0 || swap >= certs.length) return;
+    const a = certs[index], b = certs[swap];
+    await Promise.all([
+      supabase.from("certifications").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("certifications").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchCerts();
+  };
+
   if (loading) return <p className="font-display text-sm text-muted-foreground">Loading...</p>;
 
   return (

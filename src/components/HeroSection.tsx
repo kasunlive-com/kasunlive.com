@@ -69,8 +69,10 @@ const HeroSection = () => {
               Get in Touch
             </a>
           </div>
+          <div className="fade-up fade-up-delay-3">
+            <Terminal />
+          </div>
         </div>
-      </div>
     </section>
   );
 };

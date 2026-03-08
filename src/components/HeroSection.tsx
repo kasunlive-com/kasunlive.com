@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
+import Terminal from "@/components/Terminal";
 
 const roles = ["Linux Expert", "Mobile Photographer", "Web Designer", "Lead TechOps"];
 
@@ -47,7 +48,7 @@ const HeroSection = () => {
           </p>
           <h1 className="mb-6 font-display text-5xl font-bold leading-tight tracking-tight text-foreground md:text-7xl">
             Kasun
-            <span className="text-gradient"> Live</span>
+            <span className="text-gradient"> Rajapaksha</span>
           </h1>
           <div className="mb-8 h-10 font-display text-xl text-muted-foreground md:text-2xl">
             <span className="text-secondary">&gt; </span>
@@ -67,6 +68,9 @@ const HeroSection = () => {
             >
               Get in Touch
             </a>
+          </div>
+          <div className="fade-up fade-up-delay-3">
+            <Terminal />
           </div>
         </div>
       </div>

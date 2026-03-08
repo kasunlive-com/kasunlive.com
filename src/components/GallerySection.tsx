@@ -22,6 +22,18 @@ const galleryItems: GalleryItem[] = [
     ],
   },
   { type: "photo", src: photo3, title: "City Nights", desc: "Urban exploration" },
+  { type: "photo", src: photo2, title: "Morning Light", desc: "Early dawn capture" },
+  {
+    type: "album",
+    title: "Urban Stories",
+    desc: "City life through the lens",
+    cover: photo3,
+    photos: [
+      { src: photo3, title: "Neon Streets" },
+      { src: photo1, title: "Rooftop View" },
+      { src: photo2, title: "Rush Hour" },
+    ],
+  },
 ];
 
 const INITIAL_DISPLAY = 3;

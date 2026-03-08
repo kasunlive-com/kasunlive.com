@@ -135,8 +135,28 @@ const AdminGallery = () => {
     else { fetchItems(); toast({ title: "Photo removed" }); }
   };
 
-  const updateItem = async (id: string, updates: Partial<GalleryItem>) => {
-    await supabase.from("gallery_items").update(updates).eq("id", id);
+  const moveItem = async (index: number, direction: "up" | "down") => {
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= items.length) return;
+    const a = items[index];
+    const b = items[swapIndex];
+    await Promise.all([
+      supabase.from("gallery_items").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("gallery_items").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchItems();
+  };
+
+  const moveAlbumPhoto = async (albumId: string, index: number, direction: "up" | "down") => {
+    const photos = albumPhotos[albumId] ?? [];
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= photos.length) return;
+    const a = photos[index];
+    const b = photos[swapIndex];
+    await Promise.all([
+      supabase.from("gallery_album_photos").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("gallery_album_photos").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
     fetchItems();
   };
 

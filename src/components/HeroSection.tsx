@@ -37,18 +37,8 @@ const HeroSection = () => {
     >
       {/* Background */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" className="h-full w-full object-cover opacity-20" />
+        <img src={heroBg} alt="" className="h-full w-full object-cover opacity-30" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
-        {/* Hidden easter eggs — only for those who inspect */}
-        <span className="absolute bottom-[12%] right-[8%] font-display text-[6px] text-primary/[0.04] select-none pointer-events-none" aria-hidden="true">
-          initium est finis finis est initium
-        </span>
-        <span className="absolute top-[18%] left-[5%] text-[10px] text-primary/[0.03] select-none pointer-events-none" aria-hidden="true">
-          △
-        </span>
-        <span className="absolute bottom-[25%] left-[15%] text-[8px] text-secondary/[0.03] select-none pointer-events-none rotate-45" aria-hidden="true">
-          ☊
-        </span>
       </div>
 
       <div className="relative z-10 container mx-auto px-6 text-center">

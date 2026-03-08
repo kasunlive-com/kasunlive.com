@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Upload, FolderOpen, ImageIcon } from "lucide-react";
+import { Plus, Trash2, Upload, FolderOpen, ImageIcon, ChevronUp, ChevronDown } from "lucide-react";
 
 interface GalleryItem {
   id: string;
@@ -140,6 +140,31 @@ const AdminGallery = () => {
     fetchItems();
   };
 
+  const moveItem = async (index: number, direction: "up" | "down") => {
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= items.length) return;
+    const a = items[index];
+    const b = items[swapIndex];
+    await Promise.all([
+      supabase.from("gallery_items").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("gallery_items").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchItems();
+  };
+
+  const moveAlbumPhoto = async (albumId: string, index: number, direction: "up" | "down") => {
+    const photos = albumPhotos[albumId] ?? [];
+    const swapIndex = direction === "up" ? index - 1 : index + 1;
+    if (swapIndex < 0 || swapIndex >= photos.length) return;
+    const a = photos[index];
+    const b = photos[swapIndex];
+    await Promise.all([
+      supabase.from("gallery_album_photos").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("gallery_album_photos").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchItems();
+  };
+
   // Set album cover from first photo or uploaded image
   const setAlbumCover = async (albumId: string) => {
     const input = document.createElement("input");
@@ -175,9 +200,18 @@ const AdminGallery = () => {
       </div>
 
       <div className="space-y-3">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div key={item.id} className="rounded-lg border border-border bg-card">
             <div className="flex items-center gap-3 p-3">
+              {/* Reorder buttons */}
+              <div className="flex flex-col gap-0.5">
+                <button onClick={() => moveItem(index, "up")} disabled={index === 0} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                  <ChevronUp className="h-4 w-4" />
+                </button>
+                <button onClick={() => moveItem(index, "down")} disabled={index === items.length - 1} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </div>
               {item.image_url ? (
                 <img src={item.image_url} alt="" className="h-16 w-16 rounded-lg object-cover" />
               ) : (
@@ -228,9 +262,17 @@ const AdminGallery = () => {
                   </Button>
                 </div>
                 <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
-                  {(albumPhotos[item.id] ?? []).map((photo) => (
+                  {(albumPhotos[item.id] ?? []).map((photo, photoIndex) => (
                     <div key={photo.id} className="group relative">
                       <img src={photo.image_url} alt={photo.title} className="aspect-square w-full rounded-lg object-cover" />
+                      <div className="absolute bottom-1 left-1 flex gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+                        <button onClick={() => moveAlbumPhoto(item.id, photoIndex, "up")} disabled={photoIndex === 0} className="rounded-full bg-background/80 p-0.5 text-foreground disabled:opacity-30">
+                          <ChevronUp className="h-3 w-3" />
+                        </button>
+                        <button onClick={() => moveAlbumPhoto(item.id, photoIndex, "down")} disabled={photoIndex === (albumPhotos[item.id]?.length ?? 0) - 1} className="rounded-full bg-background/80 p-0.5 text-foreground disabled:opacity-30">
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
+                      </div>
                       <button
                         onClick={() => deleteAlbumPhoto(photo.id)}
                         className="absolute top-1 right-1 rounded-full bg-destructive p-1 opacity-0 transition-opacity group-hover:opacity-100"

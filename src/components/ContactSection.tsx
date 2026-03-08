@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Mail, Globe, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send } from "lucide-react";
+import { Mail, Globe, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
+import { supabase } from "@/integrations/supabase/client";
+import { toast } from "@/hooks/use-toast";
 
 const OPTIONS = [
   { id: "build", label: "Need to Build a Website", icon: Briefcase, subject: "Website Build Inquiry" },
@@ -15,12 +17,14 @@ const ContactSection = () => {
   const [selected, setSelected] = useState<typeof OPTIONS[number] | null>(null);
   const [email, setEmail] = useState("");
   const [error, setError] = useState("");
+  const [sending, setSending] = useState(false);
 
   const reset = () => {
     setStep("options");
     setSelected(null);
     setEmail("");
     setError("");
+    setSending(false);
   };
 
   const handleSelect = (option: typeof OPTIONS[number]) => {
@@ -28,23 +32,36 @@ const ContactSection = () => {
     setStep("email");
   };
 
-  const handleSend = () => {
+  const handleSend = async () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email.trim())) {
       setError("Please enter a valid email address");
       return;
     }
     setError("");
+    setSending(true);
 
-    // TODO: Replace with server-side email via Lovable Cloud edge function
-    const subject = encodeURIComponent(selected!.subject);
-    const body = encodeURIComponent(
-      `Hi Kasun,\n\nI'm reaching out regarding: ${selected!.label}\n\nFrom: ${email.trim()}\n\nLooking forward to hearing from you!`
-    );
-    window.open(`mailto:hello@kasunlive.com?subject=${subject}&body=${body}`, "_blank");
+    try {
+      const { data, error: fnError } = await supabase.functions.invoke("send-email", {
+        body: {
+          email: email.trim(),
+          reason: selected!.label,
+        },
+      });
 
-    setOpen(false);
-    reset();
+      if (fnError) throw fnError;
+
+      toast({
+        title: "Email sent!",
+        description: "Thanks for reaching out. I'll get back to you soon.",
+      });
+      setOpen(false);
+      reset();
+    } catch (err) {
+      console.error("Send email error:", err);
+      setError("Failed to send email. Please try again.");
+      setSending(false);
+    }
   };
 
   return (
@@ -149,8 +166,9 @@ const ContactSection = () => {
                 >
                   <ArrowLeft className="h-3 w-3" /> Back
                 </Button>
-                <Button size="sm" onClick={handleSend} className="flex-1 gap-2">
-                  <Send className="h-3 w-3" /> Send Email
+                <Button size="sm" onClick={handleSend} disabled={sending} className="flex-1 gap-2">
+                  {sending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+                  {sending ? "Sending..." : "Send Email"}
                 </Button>
               </div>
             </div>

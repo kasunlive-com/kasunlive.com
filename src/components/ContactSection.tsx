@@ -36,6 +36,7 @@ const ContactSection = () => {
     }
     setError("");
 
+    // TODO: Replace with server-side email via Lovable Cloud edge function
     const subject = encodeURIComponent(selected!.subject);
     const body = encodeURIComponent(
       `Hi Kasun,\n\nI'm reaching out regarding: ${selected!.label}\n\nFrom: ${email.trim()}\n\nLooking forward to hearing from you!`
@@ -64,13 +65,25 @@ const ContactSection = () => {
           </p>
 
           <div className="flex flex-col gap-4">
-            <button
-              onClick={() => { reset(); setOpen(true); }}
-              className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)] cursor-pointer"
+            {/* Email display link */}
+            <a
+              href="mailto:hello@kasunlive.com"
+              className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)]"
             >
               <Mail className="h-5 w-5 text-primary" />
-              hello@kasunlive.com — Click here to send mail
+              hello@kasunlive.com
+            </a>
+
+            {/* Send email button */}
+            <button
+              onClick={() => { reset(); setOpen(true); }}
+              className="flex items-center justify-center gap-3 rounded-xl border border-primary/50 bg-primary/10 px-6 py-4 font-display text-sm text-primary transition-all hover:bg-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] cursor-pointer"
+            >
+              <Send className="h-5 w-5" />
+              Click here to send an email
             </button>
+
+            {/* Website link */}
             <a
               href="https://kasunlive.com"
               target="_blank"

@@ -1,18 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { LogOut, Terminal, Image, BookOpen, Award } from "lucide-react";
+import { LogOut, Terminal, Image, BookOpen, Award, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AdminGallery from "@/components/admin/AdminGallery";
 import AdminSkills from "@/components/admin/AdminSkills";
 import AdminCertifications from "@/components/admin/AdminCertifications";
+import AdminUsers from "@/components/admin/AdminUsers";
 
-type Tab = "gallery" | "skills" | "certifications";
+type Tab = "gallery" | "skills" | "certifications" | "users";
 
 const tabs: { id: Tab; label: string; icon: React.ElementType }[] = [
   { id: "gallery", label: "Gallery", icon: Image },
   { id: "skills", label: "Skills", icon: BookOpen },
   { id: "certifications", label: "Certifications", icon: Award },
+  { id: "users", label: "Users", icon: Users },
 ];
 
 const AdminDashboard = () => {

@@ -203,6 +203,15 @@ const AdminGallery = () => {
         {items.map((item, index) => (
           <div key={item.id} className="rounded-lg border border-border bg-card">
             <div className="flex items-center gap-3 p-3">
+              {/* Reorder buttons */}
+              <div className="flex flex-col gap-0.5">
+                <button onClick={() => moveItem(index, "up")} disabled={index === 0} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                  <ChevronUp className="h-4 w-4" />
+                </button>
+                <button onClick={() => moveItem(index, "down")} disabled={index === items.length - 1} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                  <ChevronDown className="h-4 w-4" />
+                </button>
+              </div>
               {item.image_url ? (
                 <img src={item.image_url} alt="" className="h-16 w-16 rounded-lg object-cover" />
               ) : (

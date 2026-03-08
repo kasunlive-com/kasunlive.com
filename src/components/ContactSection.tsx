@@ -166,8 +166,9 @@ const ContactSection = () => {
                 >
                   <ArrowLeft className="h-3 w-3" /> Back
                 </Button>
-                <Button size="sm" onClick={handleSend} className="flex-1 gap-2">
-                  <Send className="h-3 w-3" /> Send Email
+                <Button size="sm" onClick={handleSend} disabled={sending} className="flex-1 gap-2">
+                  {sending ? <Loader2 className="h-3 w-3 animate-spin" /> : <Send className="h-3 w-3" />}
+                  {sending ? "Sending..." : "Send Email"}
                 </Button>
               </div>
             </div>

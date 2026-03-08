@@ -163,10 +163,27 @@ const ContactSection = () => {
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
           <p className="font-display text-xs text-muted-foreground">
             <Terminal className="mr-1 inline h-3 w-3 text-primary" />
-            © 2026 kasunlive.com — All rights reserved.
+            © 2026{" "}
+            <a
+              href="https://kasunlive.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-muted-foreground transition-colors hover:text-primary"
+            >
+              kasunlive.com
+            </a>
+            {" "}— All rights reserved.
           </p>
           <p className="font-display text-xs text-muted-foreground">
-            Built with passion & code
+            Built with passion & code —{" "}
+            <a
+              href="https://zappyfi.xyz"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-semibold text-primary transition-all hover:text-secondary hover:drop-shadow-[0_0_6px_hsl(var(--primary)/0.6)]"
+            >
+              ZAPPYfi
+            </a>
           </p>
         </div>
       </div>

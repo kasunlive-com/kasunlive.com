@@ -104,9 +104,16 @@ const AdminSkills = () => {
 
       {/* List */}
       <div className="space-y-2">
-        {skills.map((skill) => (
+        {skills.map((skill, index) => (
           <div key={skill.id} className="flex items-center gap-3 rounded-lg border border-border bg-card p-3">
-            <GripVertical className="h-4 w-4 shrink-0 text-muted-foreground" />
+            <div className="flex flex-col gap-0.5">
+              <button onClick={() => moveSkill(index, "up")} disabled={index === 0} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                <ChevronUp className="h-4 w-4" />
+              </button>
+              <button onClick={() => moveSkill(index, "down")} disabled={index === skills.length - 1} className="text-muted-foreground hover:text-primary disabled:opacity-20">
+                <ChevronDown className="h-4 w-4" />
+              </button>
+            </div>
             <input
               defaultValue={skill.name}
               onBlur={(e) => {

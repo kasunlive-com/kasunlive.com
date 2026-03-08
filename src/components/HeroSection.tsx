@@ -37,7 +37,7 @@ const HeroSection = () => {
     >
       {/* Background */}
       <div className="absolute inset-0">
-        <img src={heroBg} alt="" className="h-full w-full object-cover opacity-30" />
+        <img src={heroBg} alt="" className="h-full w-full object-cover opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-b from-background/60 via-background/80 to-background" />
         {/* Hidden easter eggs — only for those who inspect */}
         <span className="absolute bottom-[12%] right-[8%] font-display text-[6px] text-primary/[0.04] select-none pointer-events-none" aria-hidden="true">

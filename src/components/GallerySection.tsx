@@ -24,8 +24,13 @@ const galleryItems: GalleryItem[] = [
   { type: "photo", src: photo3, title: "City Nights", desc: "Urban exploration" },
 ];
 
+const INITIAL_DISPLAY = 3;
+
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState<{ photos: { src: string; title: string }[]; index: number } | null>(null);
+  const [showAll, setShowAll] = useState(false);
+
+  const visibleItems = showAll ? galleryItems : galleryItems.slice(0, INITIAL_DISPLAY);
 
   const openPhoto = (src: string, title: string) => {
     setLightbox({ photos: [{ src, title }], index: 0 });
@@ -54,7 +59,7 @@ const GallerySection = () => {
         </div>
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {galleryItems.map((item) =>
+          {visibleItems.map((item) =>
             item.type === "photo" ? (
               <div
                 key={item.title}
@@ -89,7 +94,6 @@ const GallerySection = () => {
                   className="aspect-square w-full object-cover transition-transform duration-500 group-hover:scale-110"
                   loading="lazy"
                 />
-                {/* Album badge */}
                 <div className="absolute top-3 right-3 flex items-center gap-1 rounded-lg bg-background/80 px-2 py-1 backdrop-blur-sm">
                   <FolderOpen className="h-3 w-3 text-secondary" />
                   <span className="font-display text-xs text-foreground">{item.photos.length}</span>
@@ -107,7 +111,20 @@ const GallerySection = () => {
             )
           )}
         </div>
+
+        {galleryItems.length > INITIAL_DISPLAY && (
+          <div className="mt-10 text-center">
+            <button
+              onClick={() => setShowAll(!showAll)}
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-display text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              {showAll ? "Show Less" : `View All (${galleryItems.length})`}
+            </button>
+          </div>
+        )}
       </div>
+
+
 
       {/* Lightbox */}
       {lightbox && (

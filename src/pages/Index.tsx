@@ -20,6 +20,7 @@ const Index = () => {
       <SkillsSection />
       <GallerySection />
       <ContactSection />
+      <BackToTop />
     </div>
   );
 };

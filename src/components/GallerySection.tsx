@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { supabase } from "@/integrations/supabase/client";
 import { X, ChevronLeft, ChevronRight, ImageIcon, FolderOpen } from "lucide-react";
+
+// Local fallback imports
 import burjKhalifa from "@/assets/burj-khalifa.jpg";
 import dalada from "@/assets/dalada.jpg";
 import perahera from "@/assets/perahera.jpg";
@@ -12,7 +15,7 @@ type GalleryItem =
   | { type: "photo"; src: string; title: string; desc: string }
   | { type: "album"; title: string; desc: string; cover: string; photos: { src: string; title: string }[] };
 
-const galleryItems: GalleryItem[] = [
+const fallbackItems: GalleryItem[] = [
   { type: "photo", src: burjKhalifa, title: "Burj Khalifa", desc: "Dubai city lights" },
   { type: "photo", src: dalada, title: "Dalada Maligawa", desc: "Temple of the Tooth" },
   {
@@ -33,8 +36,60 @@ const galleryItems: GalleryItem[] = [
 const INITIAL_DISPLAY = 3;
 
 const GallerySection = () => {
+  const [galleryItems, setGalleryItems] = useState<GalleryItem[]>(fallbackItems);
   const [lightbox, setLightbox] = useState<{ photos: { src: string; title: string }[]; index: number } | null>(null);
   const [showAll, setShowAll] = useState(false);
+
+  useEffect(() => {
+    const fetchGallery = async () => {
+      const { data: items } = await supabase
+        .from("gallery_items")
+        .select("*")
+        .order("sort_order");
+
+      if (!items || items.length === 0) return; // keep fallbacks
+
+      // Fetch album photos
+      const albumIds = items.filter((i: any) => i.type === "album").map((i: any) => i.id);
+      let albumPhotosMap: Record<string, { src: string; title: string }[]> = {};
+
+      if (albumIds.length > 0) {
+        const { data: photos } = await supabase
+          .from("gallery_album_photos")
+          .select("*")
+          .in("album_id", albumIds)
+          .order("sort_order");
+
+        (photos ?? []).forEach((p: any) => {
+          if (!albumPhotosMap[p.album_id]) albumPhotosMap[p.album_id] = [];
+          albumPhotosMap[p.album_id].push({ src: p.image_url, title: p.title });
+        });
+      }
+
+      const mapped: GalleryItem[] = items.map((item: any) => {
+        if (item.type === "album") {
+          const photos = albumPhotosMap[item.id] ?? [];
+          return {
+            type: "album" as const,
+            title: item.title,
+            desc: item.description ?? "",
+            cover: item.image_url ?? photos[0]?.src ?? "",
+            photos,
+          };
+        }
+        return {
+          type: "photo" as const,
+          src: item.image_url ?? "",
+          title: item.title,
+          desc: item.description ?? "",
+        };
+      });
+
+      setGalleryItems(mapped);
+    };
+
+    fetchGallery();
+  }, []);
 
   const visibleItems = showAll ? galleryItems : galleryItems.slice(0, INITIAL_DISPLAY);
 
@@ -129,8 +184,6 @@ const GallerySection = () => {
           </div>
         )}
       </div>
-
-
 
       {/* Lightbox */}
       {lightbox && (

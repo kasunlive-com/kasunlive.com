@@ -262,9 +262,17 @@ const AdminGallery = () => {
                   </Button>
                 </div>
                 <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
-                  {(albumPhotos[item.id] ?? []).map((photo) => (
+                  {(albumPhotos[item.id] ?? []).map((photo, photoIndex) => (
                     <div key={photo.id} className="group relative">
                       <img src={photo.image_url} alt={photo.title} className="aspect-square w-full rounded-lg object-cover" />
+                      <div className="absolute bottom-1 left-1 flex gap-0.5 opacity-0 transition-opacity group-hover:opacity-100">
+                        <button onClick={() => moveAlbumPhoto(item.id, photoIndex, "up")} disabled={photoIndex === 0} className="rounded-full bg-background/80 p-0.5 text-foreground disabled:opacity-30">
+                          <ChevronUp className="h-3 w-3" />
+                        </button>
+                        <button onClick={() => moveAlbumPhoto(item.id, photoIndex, "down")} disabled={photoIndex === (albumPhotos[item.id]?.length ?? 0) - 1} className="rounded-full bg-background/80 p-0.5 text-foreground disabled:opacity-30">
+                          <ChevronDown className="h-3 w-3" />
+                        </button>
+                      </div>
                       <button
                         onClick={() => deleteAlbumPhoto(photo.id)}
                         className="absolute top-1 right-1 rounded-full bg-destructive p-1 opacity-0 transition-opacity group-hover:opacity-100"

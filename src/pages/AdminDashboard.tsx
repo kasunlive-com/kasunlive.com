@@ -78,6 +78,7 @@ const AdminDashboard = () => {
         {activeTab === "gallery" && <AdminGallery />}
         {activeTab === "skills" && <AdminSkills />}
         {activeTab === "certifications" && <AdminCertifications />}
+        {activeTab === "users" && <AdminUsers />}
       </div>
     </div>
   );

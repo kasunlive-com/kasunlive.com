@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Terminal, LogIn } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Terminal, LogIn, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminLogin = () => {
@@ -11,6 +12,10 @@ const AdminLogin = () => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
+  const [showForgot, setShowForgot] = useState(false);
+  const [forgotEmail, setForgotEmail] = useState("");
+  const [forgotSent, setForgotSent] = useState(false);
+  const [forgotLoading, setForgotLoading] = useState(false);
 
   if (!loading && isAdmin) {
     navigate("/admin", { replace: true });
@@ -31,38 +36,90 @@ const AdminLogin = () => {
     }
   };
 
+  const handleForgotPassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setForgotLoading(true);
+    setError("");
+    try {
+      const { error } = await supabase.functions.invoke("reset-password-email", {
+        body: { email: forgotEmail, redirectUrl: `${window.location.origin}/reset-password` },
+      });
+      if (error) throw error;
+      setForgotSent(true);
+    } catch {
+      setError("Failed to send reset email. Please try again.");
+    }
+    setForgotLoading(false);
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
       <div className="w-full max-w-sm space-y-6">
         <div className="text-center">
           <Terminal className="mx-auto mb-3 h-8 w-8 text-primary" />
-          <h1 className="font-display text-2xl font-bold text-foreground">Admin Login</h1>
-          <p className="mt-1 font-display text-sm text-muted-foreground">Authorized personnel only</p>
+          <h1 className="font-display text-2xl font-bold text-foreground">
+            {showForgot ? "Reset Password" : "Admin Login"}
+          </h1>
+          <p className="mt-1 font-display text-sm text-muted-foreground">
+            {showForgot ? "Enter your email to receive a reset link" : "Authorized personnel only"}
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            placeholder="Email"
-            required
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
-          />
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            placeholder="Password"
-            required
-            className="w-full rounded-lg border border-border bg-card px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
-          />
-          {error && <p className="text-xs text-destructive">{error}</p>}
-          <Button type="submit" disabled={submitting} className="w-full gap-2">
-            <LogIn className="h-4 w-4" />
-            {submitting ? "Signing in..." : "Sign In"}
-          </Button>
-        </form>
+        {showForgot ? (
+          forgotSent ? (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 p-4 text-center space-y-2">
+              <p className="font-display text-sm text-foreground">Check your email for a reset link.</p>
+              <button onClick={() => { setShowForgot(false); setForgotSent(false); }} className="font-display text-xs text-primary hover:underline">
+                Back to login
+              </button>
+            </div>
+          ) : (
+            <form onSubmit={handleForgotPassword} className="space-y-4">
+              <input
+                type="email"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                placeholder="Email"
+                required
+                className="w-full rounded-lg border border-border bg-card px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+              />
+              {error && <p className="text-xs text-destructive">{error}</p>}
+              <Button type="submit" disabled={forgotLoading} className="w-full">
+                {forgotLoading ? "Sending..." : "Send Reset Link"}
+              </Button>
+              <button type="button" onClick={() => setShowForgot(false)} className="flex items-center gap-1 mx-auto font-display text-xs text-muted-foreground hover:text-primary">
+                <ArrowLeft className="h-3 w-3" /> Back to login
+              </button>
+            </form>
+          )
+        ) : (
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="Email"
+              required
+              className="w-full rounded-lg border border-border bg-card px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+            />
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+              required
+              className="w-full rounded-lg border border-border bg-card px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+            />
+            {error && <p className="text-xs text-destructive">{error}</p>}
+            <Button type="submit" disabled={submitting} className="w-full gap-2">
+              <LogIn className="h-4 w-4" />
+              {submitting ? "Signing in..." : "Sign In"}
+            </Button>
+            <button type="button" onClick={() => setShowForgot(true)} className="block mx-auto font-display text-xs text-muted-foreground hover:text-primary">
+              Forgot password?
+            </button>
+          </form>
+        )}
 
         <p className="text-center">
           <a href="/" className="font-display text-xs text-muted-foreground hover:text-primary">

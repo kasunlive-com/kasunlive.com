@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
 import { Button } from "@/components/ui/button";
-import { Plus, Trash2, Save, GripVertical } from "lucide-react";
+import { Plus, Trash2, ChevronUp, ChevronDown } from "lucide-react";
 
 interface Skill {
   id: string;

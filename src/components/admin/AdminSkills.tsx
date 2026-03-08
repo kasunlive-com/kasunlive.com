@@ -61,6 +61,17 @@ const AdminSkills = () => {
     }
   };
 
+  const moveSkill = async (index: number, dir: "up" | "down") => {
+    const swap = dir === "up" ? index - 1 : index + 1;
+    if (swap < 0 || swap >= skills.length) return;
+    const a = skills[index], b = skills[swap];
+    await Promise.all([
+      supabase.from("skills").update({ sort_order: b.sort_order }).eq("id", a.id),
+      supabase.from("skills").update({ sort_order: a.sort_order }).eq("id", b.id),
+    ]);
+    fetchSkills();
+  };
+
   if (loading) return <p className="font-display text-sm text-muted-foreground">Loading...</p>;
 
   return (

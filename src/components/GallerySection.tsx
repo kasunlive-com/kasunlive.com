@@ -1,39 +1,33 @@
 import { useState } from "react";
 import { X, ChevronLeft, ChevronRight, ImageIcon, FolderOpen } from "lucide-react";
-import photo1 from "@/assets/photo-1.jpg";
-import photo2 from "@/assets/photo-2.jpg";
-import photo3 from "@/assets/photo-3.jpg";
+import burjKhalifa from "@/assets/burj-khalifa.jpg";
+import dalada from "@/assets/dalada.jpg";
+import perahera from "@/assets/perahera.jpg";
+import kuweniConcert from "@/assets/kuweni-concert.jpg";
+import witheredFlower from "@/assets/withered-flower.jpg";
+import fourUConcert from "@/assets/4u-concert.jpg";
+import beach from "@/assets/beach.jpg";
 
 type GalleryItem =
   | { type: "photo"; src: string; title: string; desc: string }
   | { type: "album"; title: string; desc: string; cover: string; photos: { src: string; title: string }[] };
 
 const galleryItems: GalleryItem[] = [
-  { type: "photo", src: photo1, title: "Golden Hour", desc: "Mountain sunset" },
+  { type: "photo", src: burjKhalifa, title: "Burj Khalifa", desc: "Dubai city lights" },
+  { type: "photo", src: dalada, title: "Dalada Maligawa", desc: "Temple of the Tooth" },
   {
     type: "album",
-    title: "Nature Collection",
-    desc: "Macro & landscape shots",
-    cover: photo2,
+    title: "Live Concerts",
+    desc: "Music moments captured live",
+    cover: kuweniConcert,
     photos: [
-      { src: photo2, title: "Morning Dew" },
-      { src: photo3, title: "Forest Trail" },
-      { src: photo1, title: "Sunset Peak" },
+      { src: kuweniConcert, title: "Kuweni Live in Concert" },
+      { src: fourUConcert, title: "4U Concert — After 10 Years" },
     ],
   },
-  { type: "photo", src: photo3, title: "City Nights", desc: "Urban exploration" },
-  { type: "photo", src: photo2, title: "Morning Light", desc: "Early dawn capture" },
-  {
-    type: "album",
-    title: "Urban Stories",
-    desc: "City life through the lens",
-    cover: photo3,
-    photos: [
-      { src: photo3, title: "Neon Streets" },
-      { src: photo1, title: "Rooftop View" },
-      { src: photo2, title: "Rush Hour" },
-    ],
-  },
+  { type: "photo", src: witheredFlower, title: "Withered Flower", desc: "Nature in the pines" },
+  { type: "photo", src: perahera, title: "Esala Perahera", desc: "Sacred festival procession" },
+  { type: "photo", src: beach, title: "Beach Vibes", desc: "Tropical paradise" },
 ];
 
 const INITIAL_DISPLAY = 3;

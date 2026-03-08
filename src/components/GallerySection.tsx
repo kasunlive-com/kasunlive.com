@@ -24,8 +24,13 @@ const galleryItems: GalleryItem[] = [
   { type: "photo", src: photo3, title: "City Nights", desc: "Urban exploration" },
 ];
 
+const INITIAL_DISPLAY = 3;
+
 const GallerySection = () => {
   const [lightbox, setLightbox] = useState<{ photos: { src: string; title: string }[]; index: number } | null>(null);
+  const [showAll, setShowAll] = useState(false);
+
+  const visibleItems = showAll ? galleryItems : galleryItems.slice(0, INITIAL_DISPLAY);
 
   const openPhoto = (src: string, title: string) => {
     setLightbox({ photos: [{ src, title }], index: 0 });

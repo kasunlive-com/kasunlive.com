@@ -65,7 +65,7 @@ const ContactSection = () => {
           </p>
 
           <div className="flex flex-col gap-4">
-            {/* Email display link */}
+            {/* Email address - display only */}
             <a
               href="mailto:hello@kasunlive.com"
               className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)]"
@@ -73,15 +73,6 @@ const ContactSection = () => {
               <Mail className="h-5 w-5 text-primary" />
               hello@kasunlive.com
             </a>
-
-            {/* Send email button */}
-            <button
-              onClick={() => { reset(); setOpen(true); }}
-              className="flex items-center justify-center gap-3 rounded-xl border border-primary/50 bg-primary/10 px-6 py-4 font-display text-sm text-primary transition-all hover:bg-primary/20 hover:shadow-[0_0_15px_hsl(var(--primary)/0.2)] cursor-pointer"
-            >
-              <Send className="h-5 w-5" />
-              Click here to send an email
-            </button>
 
             {/* Website link */}
             <a
@@ -94,6 +85,15 @@ const ContactSection = () => {
               kasunlive.com
             </a>
           </div>
+
+          {/* Separate send email button */}
+          <button
+            onClick={() => { reset(); setOpen(true); }}
+            className="mt-2 inline-flex items-center justify-center gap-3 rounded-xl border-2 border-primary bg-primary/10 px-8 py-4 font-display text-sm font-semibold text-primary transition-all hover:bg-primary hover:text-primary-foreground hover:shadow-[0_0_20px_hsl(var(--primary)/0.3)] cursor-pointer"
+          >
+            <Send className="h-5 w-5" />
+            Click Here to Send an Email
+          </button>
         </div>
       </div>
 

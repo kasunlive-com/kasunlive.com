@@ -135,6 +135,11 @@ const AdminGallery = () => {
     else { fetchItems(); toast({ title: "Photo removed" }); }
   };
 
+  const updateItem = async (id: string, updates: Partial<GalleryItem>) => {
+    await supabase.from("gallery_items").update(updates).eq("id", id);
+    fetchItems();
+  };
+
   const moveItem = async (index: number, direction: "up" | "down") => {
     const swapIndex = direction === "up" ? index - 1 : index + 1;
     if (swapIndex < 0 || swapIndex >= items.length) return;

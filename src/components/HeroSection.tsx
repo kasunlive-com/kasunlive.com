@@ -73,6 +73,7 @@ const HeroSection = () => {
             <Terminal />
           </div>
         </div>
+      </div>
     </section>
   );
 };

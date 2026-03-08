@@ -200,7 +200,7 @@ const AdminGallery = () => {
       </div>
 
       <div className="space-y-3">
-        {items.map((item) => (
+        {items.map((item, index) => (
           <div key={item.id} className="rounded-lg border border-border bg-card">
             <div className="flex items-center gap-3 p-3">
               {item.image_url ? (

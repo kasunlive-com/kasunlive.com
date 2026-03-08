@@ -1,56 +1,164 @@
-import { Mail, Globe, Terminal } from "lucide-react";
+import { useState } from "react";
+import { Mail, Globe, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 
-const ContactSection = () => (
-  <section id="contact" className="border-t border-border bg-card py-24">
-    <div className="container mx-auto px-6">
-      <div className="mb-16 text-center">
-        <p className="mb-2 font-display text-sm tracking-[0.2em] text-primary uppercase">
-          // contact
-        </p>
-        <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
-          Let's Connect
-        </h2>
-      </div>
+const OPTIONS = [
+  { id: "build", label: "Need to Build a Website", icon: Briefcase, subject: "Website Build Inquiry" },
+  { id: "support", label: "Need Tech Support", icon: Wrench, subject: "Tech Support Request" },
+  { id: "hello", label: "Say Hello 👋", icon: HandMetal, subject: "Hello from Portfolio" },
+] as const;
 
-      <div className="mx-auto max-w-md space-y-6 text-center">
-        <p className="text-muted-foreground">
-          Interested in working together or just want to say hello? Reach out!
-        </p>
+const ContactSection = () => {
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState<"options" | "email">("options");
+  const [selected, setSelected] = useState<typeof OPTIONS[number] | null>(null);
+  const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
 
-        <div className="flex flex-col gap-4">
-          <a
-            href="mailto:hello@kasunlive.com"
-            className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:glow-border"
-          >
-            <Mail className="h-5 w-5 text-primary" />
-            hello@kasunlive.com
-          </a>
-          <a
-            href="https://kasunlive.com"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:glow-border"
-          >
-            <Globe className="h-5 w-5 text-secondary" />
-            kasunlive.com
-          </a>
+  const reset = () => {
+    setStep("options");
+    setSelected(null);
+    setEmail("");
+    setError("");
+  };
+
+  const handleSelect = (option: typeof OPTIONS[number]) => {
+    setSelected(option);
+    setStep("email");
+  };
+
+  const handleSend = () => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email.trim())) {
+      setError("Please enter a valid email address");
+      return;
+    }
+    setError("");
+
+    const subject = encodeURIComponent(selected!.subject);
+    const body = encodeURIComponent(
+      `Hi Kasun,\n\nI'm reaching out regarding: ${selected!.label}\n\nFrom: ${email.trim()}\n\nLooking forward to hearing from you!`
+    );
+    window.open(`mailto:hello@kasunlive.com?subject=${subject}&body=${body}`, "_blank");
+
+    setOpen(false);
+    reset();
+  };
+
+  return (
+    <section id="contact" className="border-t border-border bg-card py-24">
+      <div className="container mx-auto px-6">
+        <div className="mb-16 text-center">
+          <p className="mb-2 font-display text-sm tracking-[0.2em] text-primary uppercase">
+            // contact
+          </p>
+          <h2 className="font-display text-3xl font-bold text-foreground md:text-4xl">
+            Let's Connect
+          </h2>
+        </div>
+
+        <div className="mx-auto max-w-md space-y-6 text-center">
+          <p className="text-muted-foreground">
+            Interested in working together or just want to say hello? Reach out!
+          </p>
+
+          <div className="flex flex-col gap-4">
+            <button
+              onClick={() => { reset(); setOpen(true); }}
+              className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)] cursor-pointer"
+            >
+              <Mail className="h-5 w-5 text-primary" />
+              hello@kasunlive.com — Click here to send mail
+            </button>
+            <a
+              href="https://kasunlive.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)]"
+            >
+              <Globe className="h-5 w-5 text-secondary" />
+              kasunlive.com
+            </a>
+          </div>
         </div>
       </div>
-    </div>
 
-    {/* Footer */}
-    <div className="container mx-auto mt-24 border-t border-border px-6 pt-8">
-      <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-        <p className="font-display text-xs text-muted-foreground">
-          <Terminal className="mr-1 inline h-3 w-3 text-primary" />
-          © 2026 kasunlive.com — All rights reserved.
-        </p>
-        <p className="font-display text-xs text-muted-foreground">
-          Built with passion & code
-        </p>
+      {/* Send Mail Dialog */}
+      <Dialog open={open} onOpenChange={(v) => { setOpen(v); if (!v) reset(); }}>
+        <DialogContent className="border-border bg-card sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle className="font-display text-foreground">
+              {step === "options" ? "How can I help?" : selected?.label}
+            </DialogTitle>
+            <DialogDescription className="text-muted-foreground">
+              {step === "options"
+                ? "Choose a reason for reaching out"
+                : "Enter your email so I can get back to you"}
+            </DialogDescription>
+          </DialogHeader>
+
+          {step === "options" ? (
+            <div className="flex flex-col gap-3 pt-2">
+              {OPTIONS.map((opt) => (
+                <button
+                  key={opt.id}
+                  onClick={() => handleSelect(opt)}
+                  className="flex items-center gap-3 rounded-lg border border-border bg-background px-5 py-4 text-left font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_12px_hsl(var(--primary)/0.12)] cursor-pointer"
+                >
+                  <opt.icon className="h-5 w-5 shrink-0 text-primary" />
+                  {opt.label}
+                </button>
+              ))}
+            </div>
+          ) : (
+            <div className="space-y-4 pt-2">
+              <div>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => { setEmail(e.target.value); setError(""); }}
+                  onKeyDown={(e) => e.key === "Enter" && handleSend()}
+                  placeholder="your@email.com"
+                  className="w-full rounded-lg border border-border bg-background px-4 py-3 font-display text-sm text-foreground outline-none placeholder:text-muted-foreground focus:border-primary"
+                  autoFocus
+                />
+                {error && (
+                  <p className="mt-2 text-xs text-destructive">{error}</p>
+                )}
+              </div>
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => { setStep("options"); setEmail(""); setError(""); }}
+                  className="gap-1"
+                >
+                  <ArrowLeft className="h-3 w-3" /> Back
+                </Button>
+                <Button size="sm" onClick={handleSend} className="flex-1 gap-2">
+                  <Send className="h-3 w-3" /> Send Email
+                </Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Footer */}
+      <div className="container mx-auto mt-24 border-t border-border px-6 pt-8">
+        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+          <p className="font-display text-xs text-muted-foreground">
+            <Terminal className="mr-1 inline h-3 w-3 text-primary" />
+            © 2026 kasunlive.com — All rights reserved.
+          </p>
+          <p className="font-display text-xs text-muted-foreground">
+            Built with passion & code
+          </p>
+        </div>
       </div>
-    </div>
-  </section>
-);
+    </section>
+  );
+};
 
 export default ContactSection;

@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/hooks/useAuth";
-import { Terminal, LogIn } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
+import { Terminal, LogIn, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const AdminLogin = () => {

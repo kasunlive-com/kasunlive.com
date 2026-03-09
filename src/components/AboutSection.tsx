@@ -19,10 +19,12 @@ const AboutSection = () => (
         </h2>
       </div>
 
-      <div className="mx-auto mb-16 max-w-2xl text-center">
+      <div className="mx-auto mb-16 max-w-2xl text-center space-y-4">
         <p className="text-lg leading-relaxed text-muted-foreground">
-          12+ years in Linux engineering and systems architecture.
-          Building modern web experiences. Capturing the world through mobile photography.
+          For the past 12 years, I've been working behind the scenes of technology engineering Linux systems, designing resilient infrastructure, and building modern web experiences. As an infrastructure specialist and systems architect, my focus is on creating reliable systems that power the digital world.
+        </p>
+        <p className="text-lg leading-relaxed text-muted-foreground">
+          Beyond technology, I enjoy capturing life through mobile photography and exploring sound as a passionate musicophile and audiophile.
         </p>
       </div>
 

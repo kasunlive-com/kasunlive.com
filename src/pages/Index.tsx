@@ -6,6 +6,7 @@ import SkillsSection from "@/components/SkillsSection";
 import GallerySection from "@/components/GallerySection";
 import ContactSection from "@/components/ContactSection";
 import BackToTop from "@/components/BackToTop";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   useEffect(() => {
@@ -20,6 +21,7 @@ const Index = () => {
       <SkillsSection />
       <GallerySection />
       <ContactSection />
+      <Footer />
       <BackToTop />
     </div>
   );

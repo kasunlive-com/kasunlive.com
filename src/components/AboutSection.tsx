@@ -2,9 +2,9 @@ import { Terminal, Camera, Globe, Server } from "lucide-react";
 
 const highlights = [
   { icon: Terminal, label: "Linux Expert", desc: "Deep expertise in Linux systems, shell scripting, and server administration." },
-  { icon: Camera, label: "Mobile Photography", desc: "Capturing stunning visuals with nothing but a smartphone and creative vision." },
+  { icon: Camera, label: "Creative Explorer", desc: "Capturing life through mobile photography and exploring sound as a passionate musicophile and audiophile." },
   { icon: Globe, label: "Web Designer", desc: "Crafting modern, responsive, and user-centric web experiences." },
-  { icon: Server, label: "Lead TechOps", desc: "Leading technical operations, infrastructure, and DevOps practices." },
+  { icon: Server, label: "Infrastructure Specialist", desc: "Designing resilient infrastructure and reliable systems that power the digital world." },
 ];
 
 const AboutSection = () => (

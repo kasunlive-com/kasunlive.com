@@ -21,7 +21,7 @@ const Terminal = () => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    endRef.current?.scrollIntoView({ behavior: "smooth" });
+    endRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" });
   }, [lines]);
 
   const addLine = (text: string, type: "input" | "output") =>

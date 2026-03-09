@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Globe, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send, Loader2 } from "lucide-react";
+import { Mail, Linkedin, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";
@@ -91,15 +91,15 @@ const ContactSection = () => {
               hello@kasunlive.com
             </a>
 
-            {/* Website link */}
+            {/* LinkedIn link */}
             <a
-              href="https://kasunlive.com"
+              href="https://www.linkedin.com/in/kasun-rajapaksha/"
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center justify-center gap-3 rounded-xl border border-border bg-background px-6 py-4 font-display text-sm text-foreground transition-all hover:border-primary hover:shadow-[0_0_15px_hsl(var(--primary)/0.15)]"
             >
-              <Globe className="h-5 w-5 text-secondary" />
-              kasunlive.com
+              <Linkedin className="h-5 w-5 text-secondary" />
+              LinkedIn
             </a>
           </div>
 

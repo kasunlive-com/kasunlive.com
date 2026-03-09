@@ -76,6 +76,10 @@ const Terminal = () => {
       case "clear":
         setLines([]);
         break;
+      case "sudo login":
+        addLine("Authenticating... Redirecting to admin panel.", "output");
+        window.open("/admin/login", "_blank");
+        break;
       default:
         addLine(`Command not found: ${trimmed}. Type 'help' for available commands.`, "output");
     }

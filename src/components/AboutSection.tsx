@@ -21,9 +21,8 @@ const AboutSection = () => (
 
       <div className="mx-auto mb-16 max-w-2xl text-center">
         <p className="text-lg leading-relaxed text-muted-foreground">
-          I'm a multidisciplinary tech professional who thrives at the intersection of
-          systems engineering, creative photography, and modern web design. I lead technical
-          operations by day and explore the world through my camera lens by night.
+          12+ years in Linux engineering and systems architecture.
+          Building modern web experiences. Capturing the world through mobile photography.
         </p>
       </div>
 

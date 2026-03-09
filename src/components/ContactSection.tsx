@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Mail, Globe, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send, Loader2 } from "lucide-react";
+import { Mail, Linkedin, Terminal, Briefcase, Wrench, HandMetal, ArrowLeft, Send, Loader2 } from "lucide-react";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { supabase } from "@/integrations/supabase/client";

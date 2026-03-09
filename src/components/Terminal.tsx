@@ -86,7 +86,9 @@ const Terminal = () => {
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter" && input.trim()) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (!input.trim()) return;
       handleCommand(input);
       setInput("");
     }

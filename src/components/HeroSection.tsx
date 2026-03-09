@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import heroBg from "@/assets/hero-bg.jpg";
 import Terminal from "@/components/Terminal";
 
-const roles = ["Linux Expert", "Mobile Photographer", "Web Designer", "Lead TechOps"];
+const roles = ["Linux Expert", "Mobile Photographer", "Web Designer", "Infrastructure Specialist", "Musicophile & Audiophile"];
 
 const HeroSection = () => {
   const [roleIndex, setRoleIndex] = useState(0);

@@ -7,7 +7,7 @@ const HELP_TEXT = `Available commands:
   about     - Quick intro
   clear     - Clear terminal`;
 
-const ABOUT_TEXT = `Kasun Rajapaksha — Linux Expert | Mobile Photographer | Web Designer | Lead TechOps
+const ABOUT_TEXT = `Kasun Rajapaksha — Linux Expert | Mobile Photographer | Web Designer | Infrastructure Specialist | Musicophile & Audiophile
 Visit https://kasunlive.com for more.`;
 
 const Terminal = () => {

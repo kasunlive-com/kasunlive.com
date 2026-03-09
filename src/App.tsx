@@ -9,6 +9,7 @@ import AdminLogin from "./pages/AdminLogin";
 import AdminDashboard from "./pages/AdminDashboard";
 import ResetPassword from "./pages/ResetPassword";
 import NotFound from "./pages/NotFound";
+import PrivacyPolicy from "./pages/PrivacyPolicy";
 
 const queryClient = new QueryClient();
 
@@ -24,6 +25,7 @@ const App = () => (
             <Route path="/admin/login" element={<AdminLogin />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/reset-password" element={<ResetPassword />} />
+            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>

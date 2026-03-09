@@ -178,7 +178,7 @@ const ContactSection = () => {
 
       {/* Footer */}
       <div className="container mx-auto mt-24 border-t border-border px-6 pt-8">
-        <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
+        <div className="flex flex-col items-center justify-center gap-2 text-center sm:flex-row sm:justify-between sm:gap-4">
           <p className="font-display text-xs text-muted-foreground">
             <Terminal className="mr-1 inline h-3 w-3 text-primary" />
             © 2026{" "}
@@ -192,6 +192,12 @@ const ContactSection = () => {
             </a>
             {" "}— All rights reserved.
           </p>
+          <a
+            href="/privacy-policy"
+            className="font-display text-xs text-muted-foreground transition-colors hover:text-primary"
+          >
+            Privacy Policy
+          </a>
           <p className="font-display text-xs text-muted-foreground">
             Built with passion & code —{" "}
             <a

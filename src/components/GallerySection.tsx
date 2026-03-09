@@ -174,13 +174,22 @@ const GallerySection = () => {
         </div>
 
         {galleryItems.length > INITIAL_DISPLAY && (
-          <div className="mt-10 text-center">
+          <div className="mt-10 flex flex-wrap items-center justify-center gap-3">
             <button
               onClick={() => setShowAll(!showAll)}
               className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-display text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
             >
               {showAll ? "Show Less" : `View All (${galleryItems.length})`}
             </button>
+            <a
+              href="https://www.instagram.com/kassa.iam/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 rounded-lg border border-border bg-card px-6 py-3 font-display text-sm text-foreground transition-colors hover:border-primary hover:text-primary"
+            >
+              <Instagram className="h-4 w-4" />
+              Instagram
+            </a>
           </div>
         )}
       </div>

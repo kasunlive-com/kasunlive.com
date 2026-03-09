@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
-import { X, ChevronLeft, ChevronRight, ImageIcon, FolderOpen } from "lucide-react";
+import { X, ChevronLeft, ChevronRight, ImageIcon, FolderOpen, Instagram } from "lucide-react";
 
 // Local fallback imports
 import burjKhalifa from "@/assets/burj-khalifa.jpg";
